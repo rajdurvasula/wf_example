@@ -1,0 +1,24 @@
+---
+#
+# Task to setup Wildfly user, group
+#
+
+- name: Create group for Wildfly
+  group:
+    name: "{{ wf.group }}"
+    gid: "{{ wf.group_id }}"
+    state: present
+  tags:
+    - setup
+
+- name: Create user for Wildfly
+  user:
+    name: "{{ wf.user }}"
+    uid: "{{ wf.user_id }}"
+    group: "{{ wf.group }}"
+    create_home: no
+    home: "{{ wf.user_home }}"
+    state: present
+  tags:
+    - setup
+

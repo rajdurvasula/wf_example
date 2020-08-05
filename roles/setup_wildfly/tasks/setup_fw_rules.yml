@@ -1,0 +1,31 @@
+---
+#
+# Tasks to setup firewall rules
+#
+
+- name: Check if Firewall daemon service exists
+  stat:
+    path: "/etc/systemd/system/firewalld.service"
+  register: firewalld_file
+  tags:
+    - setup
+  
+- name: Add Allow rule for Wildfly Application port
+  firewalld:
+    port: "{{ wf.app_port }}/tcp"
+    permanent: yes
+    state: enabled
+    immediate: yes
+  when:
+    - firewalld_file.stat.exists|bool
+    - enable_firewall|bool
+
+- name: Add Allow rule for Wildfly Admin port
+  firewalld:
+    port: "{{ wf.admin_port }}/tcp"
+    permanent: yes
+    state: enabled
+    immediate: yes
+  when:
+    - firewalld_file.stat.exists|bool
+    - enable_firewall|bool

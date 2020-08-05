@@ -1,0 +1,17 @@
+---
+# defaults file for setup_wildfly
+
+wf:
+  service: wildfly
+  user: wildfly
+  user_id: 1010
+  group: wildfly
+  group_id: 1010
+  install_dir: /root
+  user_home: /opt/wildfly
+  conf_dir: /etc/wildfly
+  version: "20.0.0.Final"
+  installer_url: "https://download.jboss.org/wildfly/20.0.0.Final/wildfly-20.0.0.Final.tar.gz"
+
+tmp_home_dir: "{{ wf.install_dir }}/{{ (wf.installer_url | basename).split('.tar.gz')[0] }}"
+enable_firewall: false

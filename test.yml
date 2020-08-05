@@ -1,0 +1,17 @@
+---
+# test
+- name: test
+  hosts: ec2 
+  vars_files:
+    - roles/setup_wildfly/defaults/main.yml
+
+  tasks:
+
+    - name: Check firewalld service exists
+      stat:
+        path: /etc/systemd/system/firewalld.service
+      register: firewalld_file_status
+
+    - name: Print result
+      debug:
+        msg: "{{ firewalld_file_status }}" 

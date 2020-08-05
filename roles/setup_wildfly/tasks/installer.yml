@@ -1,0 +1,43 @@
+---
+#
+# Tasks to obtain Wildfly installer
+#
+
+- name: Check if wildfly home exists
+  stat:
+    path: "{{ wf.user_home }}"
+  register: wf_user_home_status
+  tags:
+    - setup
+
+- name: Delete old directory for re-install
+  file:
+    path: "{{ wf.user_home }}"
+    state: absent
+  tags:
+    - setup
+
+- name: Download Wildfly {{wf.version}} installer binary
+  get_url:
+    url: "{{ wf.installer_url }}"
+    dest: "{{ wf.install_dir }}"
+  tags:
+    - setup
+
+- name: Extract Wildfly installer binary
+  block:
+    - name: Extract binary
+      unarchive:
+        src: "{{ wf.install_dir }}/{{ wf.installer_url | basename }}"
+        dest: "{{ wf.install_dir }}"
+        remote_src: yes
+    - name: Remove installer binary
+      file:
+        path: "{{ wf.install_dir }}/{{ wf.installer_url | basename }}"
+        state: absent
+        force: yes
+    - name: Move wildfly home
+      command: mv "{{ tmp_home_dir }}" "{{ wf.user_home }}"
+  tags:
+    - setup
+

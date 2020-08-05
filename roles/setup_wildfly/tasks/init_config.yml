@@ -1,0 +1,51 @@
+---
+#
+# Tasks to configure Wildfly server (Initial configuration)
+#
+
+- name: Create {{wf.conf_dir}} directory
+  file:
+    path: "{{ wf.conf_dir }}"
+    state: directory
+    recurse: yes
+  tags:
+    - setup
+
+- name: Copy wildfly configuration file
+  copy:
+    src: "{{ wf.user_home }}/docs/contrib/scripts/systemd/wildfly.conf"
+    dest: "{{ wf.conf_dir }}/"
+    remote_src: yes
+  tags:
+    - setup
+
+- name: Copy wildfly launch script
+  copy:
+    src: "{{ wf.user_home }}/docs/contrib/scripts/systemd/launch.sh"
+    dest: "{{ wf.user_home }}/bin"
+    remote_src: yes
+    mode: 0755
+  tags:
+    - setup
+
+- name: Set ownership of all files in {{wf.user_home}}/bin directory
+  file:
+    path: "{{ item }}"
+    mode: 0755
+  with_fileglob: "{{ wf.user_home }}/bin/*.sh"
+  tags:
+    - setup
+
+- name: Copy system spec file
+  copy:
+    src: "{{ wf.user_home }}/docs/contrib/scripts/systemd/wildfly.service"
+    dest: "/etc/systemd/system/"
+    remote_src: yes
+  tags:
+    - setup
+
+- name: Include Task to setup Firewall rules
+  include_tasks: setup_fw_rules.yml
+  tags:
+   - setup
+

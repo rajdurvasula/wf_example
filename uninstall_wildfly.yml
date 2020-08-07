@@ -11,6 +11,3 @@
 
   roles:
     - role: teardown_wildfly
-      tags:
-        - never
-        - uninstall

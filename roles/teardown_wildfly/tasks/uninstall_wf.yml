@@ -3,33 +3,39 @@
 # Tasks to uninstall wildfly server
 #
 
-- name: Stop wildfly server
-  systemd:
-    name: "{{ wf.service }}"
-    state: stopped
-  tags:
-    - uninstall
-
-- name: Remove wildfly system spec
-  file:
-    path: "/etc/systemd/system/{{ wf.service }}.service"
-    state: absent
-    force: yes
-  tags:
-    - uninstall
-
-- name: Delete wildfly directory
-  file:
+- name: Check "{{wf.user_home}}" exists
+  stat:
     path: "{{ wf.user_home }}"
-    state: absent
-    force: yes
-  tags:
-    - uninstall
+  register: wf_user_home_status
 
-- name: Delete wildfly user
-  user:
-    name: "{{ wf.user }}"
-    state: absent
-  tags:
-    - uninstall
+- name: Remove wildfly user, files, directories
+  block:
+    - name: Check wildfly system spec file
+      stat:
+        path: "/etc/systemd/system/{{ wf.service }}.service"
+      register: wf_service_status
+
+    - name: Stop wildfly server
+      systemd:
+        name: "{{ wf.service }}"
+        state: stopped
+      when:
+        - wf_service_status.stat.exists
+
+    - name: Remove wildfly system spec
+      file:
+        path: "{{ item }}"
+        state: absent
+        force: yes
+      with_items:
+        - "/etc/systemd/system/{{ wf.service }}.service"
+        - "{{ wf.conf_dir }}"
+        - "{{ wf.user_home }}"
+
+    - name: Delete wildfly user
+      user:
+        name: "{{ wf.user }}"
+        state: absent
+  when:
+    - wf_user_home_status.stat.exists
 

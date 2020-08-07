@@ -28,9 +28,23 @@
   tags:
     - setup
 
-- name: Set ownership of all files in {{wf.user_home}}/bin directory
+- name: Set ownership of all files in {{wf.user_home}} to wildfly user
+  file:
+    path: "{{wf.user_home}}"
+    state: directory
+    owner: "{{wf.user}}"
+    group: "{{wf.group}}"
+    recurse: yes
+  notify:
+    - start_wildfly
+  tags:
+    - setup
+
+- name: Set execute permissions on all script files in {{wf.user_home}}/bin directory
   file:
     path: "{{ item }}"
+    owner: "{{wf.user}}"
+    group: "{{wf.group}}"
     mode: 0755
   with_fileglob: "{{ wf.user_home }}/bin/*.sh"
   tags:

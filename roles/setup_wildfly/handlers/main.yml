@@ -1,2 +1,9 @@
 ---
 # handlers file for setup_wildfly
+
+- name: start_wildfly
+  systemd:
+    name: "{{ wf.service }}"
+    state: started
+    enabled: yes
+    daemon_reload: yes

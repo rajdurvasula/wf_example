@@ -15,9 +15,3 @@
   include_tasks: init_config.yml
   tags:
     - setup
-
-- name: Include Task to start/stop Wildfly service
-  include_tasks: start_stop_wf.yml
-  tags:
-    - setup
-

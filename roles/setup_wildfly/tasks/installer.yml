@@ -10,10 +10,28 @@
   tags:
     - setup
 
-- name: Delete old directory for re-install
-  file:
-    path: "{{ wf.user_home }}"
-    state: absent
+- name: Remove old wildfly directory and files
+  block:
+    - name: Check wildfly system spec exists
+      stat:
+        path: "/etc/systemd/system/{{ wf.service }}.service"
+      register: wf_service_status
+
+    - name: Stop wildfly service
+      systemd:
+        name: "{{ wf.service }}"
+        state: stopped
+      when:
+        - wf_service_status.stat.exists
+
+    - name: Remove wildfly files
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - "/etc/systemd/system/{{ wf.service }}.service"
+        - "{{ wf.conf_dir }}"
+        - "{{ wf.user_home }}"
   tags:
     - setup
 
@@ -40,4 +58,3 @@
       command: mv "{{ tmp_home_dir }}" "{{ wf.user_home }}"
   tags:
     - setup
-

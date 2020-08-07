@@ -3,5 +3,3 @@
 
 - name: Uninstall wildfly
   include_tasks: uninstall_wf.yml
-  tags:
-    - uninstall

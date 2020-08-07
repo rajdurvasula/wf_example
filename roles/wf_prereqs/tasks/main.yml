@@ -1,0 +1,11 @@
+---
+# tasks file for wf_prereqs
+#
+
+- name: Install pre-requisite packages
+  package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ packages }}"
+  tags:
+    - setup

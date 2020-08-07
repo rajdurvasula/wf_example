@@ -1,12 +1,20 @@
 ---
 # defaults file for setup_wildfly
 
+packages:
+  - vim
+  - wget
+  - java-1.8.0-openjdk-devel
+  - maven
+
 wf:
   service: wildfly
   user: wildfly
   user_id: 1010
   group: wildfly
   group_id: 1010
+  app_port: 8080
+  admin_port: 9990
   install_dir: /root
   user_home: /opt/wildfly
   conf_dir: /etc/wildfly

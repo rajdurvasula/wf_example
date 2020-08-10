@@ -7,6 +7,8 @@
     path: '{{ sample_app.workspace_dir }}'
     state: directory
     recurse: yes
+    owner: '{{ sample_app.owner }}'
+    group: '{{ sample_app.group }}'
   tags:
     - sample
 
@@ -16,6 +18,15 @@
     dest: '{{ sample_app.workspace_dir }}'
     accept_hostkey: yes
     clone: yes
+  tags:
+    - sample
+
+- name: Set ownership on sample application directory
+  file:
+    path: '{{ sample_app.workspace_dir }}'
+    owner: '{{ sample_app.owner }}'
+    group: '{{ sample_app.group }}'
+    recurse: yes
   tags:
     - sample
 

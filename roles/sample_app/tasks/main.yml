@@ -1,0 +1,35 @@
+---
+# tasks file for sample_app
+#
+
+- name: Create workspace directory for sample application
+  file:
+    path: '{{ sample_app.workspace_dir }}'
+    state: directory
+    recurse: yes
+  tags:
+    - sample
+
+- name: Clone project
+  git:
+    repo: '{{ sample_app.repo }}'
+    dest: '{{ sample_app.workspace_dir }}'
+    accept_hostkey: yes
+    clone: yes
+  tags:
+    - sample
+
+- name: Build project
+  shell: |
+    mvn wildfly:deploy
+  args:
+    executable: /bin/bash
+    chdir: '{{ sample_app.workspace_dir }}'
+  register: mvn_output
+  tags:
+    - sample
+
+- name: Print build output
+  debug: var=mvn_output
+  tags:
+    - sample

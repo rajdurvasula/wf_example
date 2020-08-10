@@ -23,3 +23,7 @@ wf:
 
 tmp_home_dir: "{{ wf.install_dir }}/{{ (wf.installer_url | basename).split('.tar.gz')[0] }}"
 enable_firewall: false
+
+sample_app:
+  repo: 'https://github.com/rajdurvasula/wf_members.git'
+  workspace_dir: '/home/ec2-user/sample-app-ws'

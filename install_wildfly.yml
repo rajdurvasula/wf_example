@@ -14,3 +14,8 @@
       tags:
         - never
         - setup
+
+    - role: sample_app
+      tags:
+        - never
+        - sample

@@ -3,6 +3,11 @@
 # Tasks to remove firewall rules
 #
 
+- name: Check if Firewall daemon service exists
+  stat:
+    path: "/etc/systemd/system/firewalld.service"
+  register: firewalld_file
+
 - name: Remove firewall rules
   firewalld:
     port: "{{ item }}/tcp"
@@ -12,3 +17,5 @@
   with_items: 
     - "{{ wf.app_port }}"
     - "{{ wf.admin_port }}"
+  when:
+    - firewalld_file.stat.exists|bool

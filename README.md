@@ -11,7 +11,7 @@ Following ansible roles are defined in this project.
 - sample_app
 
 ### wf_prereqs
-This role installs of pre-requisite OS packages.
+This role installs pre-requisite OS packages.
 - vim editor
 - git
 - OpenJdk 1.8.0

@@ -1,0 +1,14 @@
+---
+#
+# Tasks to remove firewall rules
+#
+
+- name: Remove firewall rules
+  firewalld:
+    port: "{{ item }}/tcp"
+    state: disabled
+    permanent: yes
+    immediate: yes
+  with_items: 
+    - "{{ wf.app_port }}"
+    - "{{ wf.admin_port }}"

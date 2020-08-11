@@ -3,15 +3,9 @@
 
 - name: Include Task to get Wildfly binaries
   include_tasks: installer.yml
-  tags:
-    - setup
 
 - name: Include Task to create Wildfly user, group
   include_tasks: setup_owner.yml
-  tags:
-    - setup
 
 - name: Include Task to configure Wildfly server
   include_tasks: init_config.yml
-  tags:
-    - setup

@@ -9,8 +9,6 @@
     recurse: yes
     owner: '{{ sample_app.owner }}'
     group: '{{ sample_app.group }}'
-  tags:
-    - sample
 
 - name: Clone project
   git:
@@ -18,8 +16,6 @@
     dest: '{{ sample_app.workspace_dir }}'
     accept_hostkey: yes
     clone: yes
-  tags:
-    - sample
 
 - name: Set ownership on sample application directory
   file:
@@ -27,8 +23,6 @@
     owner: '{{ sample_app.owner }}'
     group: '{{ sample_app.group }}'
     recurse: yes
-  tags:
-    - sample
 
 - name: Build project
   shell: |
@@ -37,10 +31,6 @@
     executable: /bin/bash
     chdir: '{{ sample_app.workspace_dir }}'
   register: mvn_output
-  tags:
-    - sample
 
 - name: Print build output
   debug: var=mvn_output
-  tags:
-    - sample

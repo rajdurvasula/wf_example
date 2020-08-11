@@ -7,8 +7,6 @@
   stat:
     path: "/etc/systemd/system/firewalld.service"
   register: firewalld_file
-  tags:
-    - setup
   
 - name: Add Allow rule for Wildfly Application port
   firewalld:

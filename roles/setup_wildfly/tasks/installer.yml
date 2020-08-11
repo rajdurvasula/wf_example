@@ -7,8 +7,6 @@
   stat:
     path: "{{ wf.user_home }}"
   register: wf_user_home_status
-  tags:
-    - setup
 
 - name: Remove old wildfly directory and files
   block:
@@ -32,15 +30,11 @@
         - "/etc/systemd/system/{{ wf.service }}.service"
         - "{{ wf.conf_dir }}"
         - "{{ wf.user_home }}"
-  tags:
-    - setup
 
 - name: Download Wildfly {{wf.version}} installer binary
   get_url:
     url: "{{ wf.installer_url }}"
     dest: "{{ wf.install_dir }}"
-  tags:
-    - setup
 
 - name: Extract Wildfly installer binary
   block:
@@ -56,5 +50,3 @@
         force: yes
     - name: Move wildfly home
       command: mv "{{ tmp_home_dir }}" "{{ wf.user_home }}"
-  tags:
-    - setup

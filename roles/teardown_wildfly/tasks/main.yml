@@ -3,3 +3,6 @@
 
 - name: Uninstall wildfly
   include_tasks: uninstall_wf.yml
+
+- name: Remove firewall rules
+  include_tasks: remove_fw_rules.yml

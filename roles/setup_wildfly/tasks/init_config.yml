@@ -8,16 +8,12 @@
     path: "{{ wf.conf_dir }}"
     state: directory
     recurse: yes
-  tags:
-    - setup
 
 - name: Copy wildfly configuration file
   copy:
     src: "{{ wf.user_home }}/docs/contrib/scripts/systemd/wildfly.conf"
     dest: "{{ wf.conf_dir }}/"
     remote_src: yes
-  tags:
-    - setup
 
 - name: Copy wildfly launch script
   copy:
@@ -25,8 +21,6 @@
     dest: "{{ wf.user_home }}/bin"
     remote_src: yes
     mode: 0755
-  tags:
-    - setup
 
 - name: Set ownership of all files in {{wf.user_home}} to wildfly user
   file:
@@ -37,8 +31,6 @@
     recurse: yes
   notify:
     - start_wildfly
-  tags:
-    - setup
 
 - name: Set execute permissions on all script files in {{wf.user_home}}/bin directory
   file:
@@ -47,19 +39,13 @@
     group: "{{wf.group}}"
     mode: 0755
   with_fileglob: "{{ wf.user_home }}/bin/*.sh"
-  tags:
-    - setup
 
 - name: Copy system spec file
   copy:
     src: "{{ wf.user_home }}/docs/contrib/scripts/systemd/wildfly.service"
     dest: "/etc/systemd/system/"
     remote_src: yes
-  tags:
-    - setup
 
 - name: Include Task to setup Firewall rules
   include_tasks: setup_fw_rules.yml
-  tags:
-   - setup
 

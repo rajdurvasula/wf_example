@@ -46,6 +46,13 @@
     dest: "/etc/systemd/system/"
     remote_src: yes
 
+- name: Start wildfly service
+  systemd:
+    name: "{{ wf.service }}"
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
 - name: Include Task to setup Firewall rules
   include_tasks: setup_fw_rules.yml
 

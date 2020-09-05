@@ -11,3 +11,6 @@
       uri:
         url: "http://{{ ansible_fqdn }}:{{ wf.app_port }}/{{ sample_app.app_uri }}"
         status_code: 200
+      tags:
+        - never
+        - test

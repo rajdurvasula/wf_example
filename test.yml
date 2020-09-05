@@ -1,17 +1,13 @@
 ---
 # test
 - name: test
-  hosts: ec2 
+  hosts: all 
   vars_files:
-    - roles/setup_wildfly/defaults/main.yml
+    - vars/main.yml
 
   tasks:
 
-    - name: Check firewalld service exists
-      stat:
-        path: /etc/systemd/system/firewalld.service
-      register: firewalld_file_status
-
-    - name: Print result
-      debug:
-        msg: "{{ firewalld_file_status }}" 
+    - name: Check Application URL
+      uri:
+        url: "http://{{ ansible_fqdn }}:{{ wf.app_port }}/{{ sample_app.app_uri }}"
+        status_code: 200
